@@ -460,6 +460,10 @@ class GrowiExport:
         return False
 
     def _configuration_logging(self) -> None:
+        access_token_warning = "### WARNING ### No ACCESS_TOKEN provided."
+        if self._access_token:
+            access_token_warning = "provided."
+
         self._logger.log(
             f"========================================\n"
             f" Configuration\n"
@@ -467,6 +471,7 @@ class GrowiExport:
             f"GROWI_URL  = {self._growi_url}\n"
             f"GROWI_PATH = {self._growi_path}\n"
             f"EXPORT_DIR = {self._export_dir}\n"
+            f"ACCESS_TOKEN = {access_token_warning}\n"
             f"NORMALIZATION_FORM = {self._normalization_form}\n"
             f"----------------------------------------\n"
             f"{self._os_name} Limitation: max path length = {self._pc_max_path_len}\n"
