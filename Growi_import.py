@@ -655,6 +655,8 @@ if __name__ == "__main__":
     args = parse_arguments()
     config = load_config(args.config)
 
+    conf_url = "unknown"
+    conf_path = "unknown"
     try:
         conf_url = config.get("root", "GROWI_URL")
         conf_path = config.get("root", "GROWI_PATH")
