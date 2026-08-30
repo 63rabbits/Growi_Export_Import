@@ -92,7 +92,7 @@ Export data from Growi, and import this data.
            - Exporting: Specifies the destination directory for the export.
            - Importing: Specifies the directory to import from.
            - Default value: `./growi_export`
-       - **NORMALIZATION_FORM**: Specifies the [Unicode normalization form](https://www.google.com/search?q=https://en.wikipedia.org/wiki/Unicode_equivalence%23Normalization). Apply only to the file/page path.
+       - **NORMALIZATION_FORM**: Specifies the [Unicode normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms). Apply only to the file/page path.
            - **NFC** (Default): Normalization Form Canonical Composition
                - Example: Converts `e` + `́` into `é` (Composition).
            - **NFD**: Normalization Form Canonical Decomposition
