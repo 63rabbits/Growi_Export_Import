@@ -133,8 +133,8 @@ class GrowiExport:
             if res_status != HTTP_RES_SUCCESS:
                 self._logger.log(f"{res_status}")
                 self._logger.log(f"    [RETRIEVE] ### FAILED ### Failed to retrieve page list."
-                                 f" (HTTP status code : {res_status})")
-                return target_pages
+                                 f" (HTTP status code : {res_status})", to_terminal=False)
+                return []
 
             current_pages = res.json().get("pages", [])
 
@@ -165,7 +165,8 @@ class GrowiExport:
         )
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
-            self._logger.log(f"    [Page] ### FAILED ### Failed to retrieve page. (HTTP status code : {res_status})")
+            self._logger.log(f"    [Page] ### FAILED ### Failed to retrieve page. "
+                             f"(HTTP status code : {res_status})", to_terminal=False)
             return False
 
         res_json = res.json()
@@ -207,8 +208,9 @@ class GrowiExport:
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
             self._logger.log(f"    [Attachments] ### FAILED ### Failed to retrieve attachment list."
-                             f" (HTTP status code : {res_status})")
+                             f" (HTTP status code : {res_status})", to_terminal=False)
             return False
+
         res_json = res.json()
         attachments = res_json.get("paginateResult").get("docs")
         if not attachments:
@@ -276,8 +278,9 @@ class GrowiExport:
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
             self._logger.log(f"    [Comments] ### FAILED ### Failed to retrieve comments."
-                             f" (HTTP status code : {res_status})")
+                             f" (HTTP status code : {res_status})", to_terminal=False)
             return False
+
         res_json = res.json()
         comments_count = len(res_json.get("comments", []))
         if comments_count <= 0:
@@ -296,7 +299,9 @@ class GrowiExport:
             self._logger.log(f"    [Comments] {comments_count} items", to_terminal=False)
         else:
             error_reason = res_json.get("error", "?")
-            self._logger.log(f"    [Comments] ### FAILED ### Failed to retrieve comments. ({error_reason})")
+            self._logger.log(f"    [Comments] ### FAILED ### Failed to retrieve comments. ({error_reason})",
+                             to_terminal=False)
+            return False
 
         return True
 
@@ -310,8 +315,10 @@ class GrowiExport:
         )
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
-            self._logger.log(f"    [Tags] ### FAILED ### Failed to retrieve tags. (HTTP status code : {res_status})")
+            self._logger.log(f"    [Tags] ### FAILED ### Failed to retrieve tags. "
+                             f"(HTTP status code : {res_status})", to_terminal=False)
             return False
+
         res_json = res.json()
         tags_count = len(res_json.get("tags", []))
         if tags_count <= 0:
@@ -330,7 +337,8 @@ class GrowiExport:
             self._logger.log(f"    [Tags] {tags_count} items", to_terminal=False)
         else:
             error_reason = res_json.get("error", "?")
-            self._logger.log(f"    [Tags] ### FAILED ### Failed to retrieve tags. ({error_reason})")
+            self._logger.log(f"    [Tags] ### FAILED ### Failed to retrieve tags. ({error_reason})",
+                             to_terminal=False)
             return False
 
         return True
@@ -346,8 +354,9 @@ class GrowiExport:
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
             self._logger.log(f"    [Bookmarks] ### FAILED ### Failed to retrieve bookmarks."
-                             f" (HTTP status code : {res_status})")
+                             f" (HTTP status code : {res_status})", to_terminal=False)
             return False
+
         res_json = res.json()
         bookmarks_count = res_json.get("sumOfBookmarks", 0)
         if bookmarks_count <= 0:
@@ -374,7 +383,7 @@ class GrowiExport:
         res_status = res.status_code
         if res_status != HTTP_RES_SUCCESS:
             self._logger.log(f"    [Markdown] ### FAILED ### Failed to retrieve Markdown."
-                             f" (HTTP status code : {res_status})")
+                             f" (HTTP status code : {res_status})", to_terminal=False)
             return False
 
         save_path = os.path.join(save_dir, NAME_MARKDOWN)
