@@ -75,9 +75,10 @@ class GrowiImport:
         self._normalization_form = normalization_form
         self._upload_comments = comments
         self._upload_bookmark = bookmark
+        self._username = "unknown"
         self._session = self._create_session()
-        self._page_id_map = {}
         self._attachment_id_replacer = MarkdownTextReplacer()
+        self._page_id_map = {}
 
     @staticmethod
     def _get_os_type() -> str:
@@ -351,11 +352,8 @@ class GrowiImport:
             return True
 
         json_data = json.loads(path.read_text(encoding="utf-8"))
-        count = (
-                json_data.get("sumOfBookmarks", 0)
-                or (1 if json_data.get("isBookmarked", False) else 0)
-                or len(json_data.get("bookmarkedUsers", []))
-        )
+        bookmarked_users = json_data.get("bookmarkedUsers", [])
+        count = sum(1 for item in bookmarked_users if item.get("username") == self._username)
         if count <= 0:
             return True
 
@@ -492,6 +490,8 @@ class GrowiImport:
             if not page_info:
                 failed_count += 1
             else:
+                self._username = page_info.get("page", {}).get("creator", {}).get("username", "unknown")
+
                 self._page_id_map = {}
                 answer = True
                 answer &= self._import_attachments(directory, page_info)
@@ -513,6 +513,8 @@ class GrowiImport:
             f"  Total pages : {total_count} pages\n"
             f"  Successful  : {success_count} pages\n"
             f"  Failed      : {failed_count} pages\n"
+            f"----------------------------------------\n"
+            f"  Import user : {self._username}\n"
             f"========================================\n"
             f"[i] For details, please refer to {self._logger.filepath.name}"
         )
