@@ -1,4 +1,4 @@
-# Growi_markdownExportImport
+# Growi_Export_Import
 
 ---
 
@@ -108,7 +108,7 @@ Export data from Growi, and import this data.
   - Configuration Example:
 
     ```bash
-    # GROWI Export/Import
+    # GROWI Export
     
     GROWI_URL    = https://foo.growi.cloud
     GROWI_PATH   = /user/foo/bar/baz
