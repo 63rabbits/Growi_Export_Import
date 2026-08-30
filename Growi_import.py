@@ -397,8 +397,6 @@ class GrowiImport:
     def _check_connection(self) -> bool:
         """Checks connection to GROWI_URL."""
         self._logger.log(f"Checking connection to {self._growi_url}...")
-        if not self._access_token or not self._access_token.strip():
-            self._logger.log("    >> [WARNING] No ACCESS_TOKEN provided. Proceeding in Unauthenticated/Guest mode.")
 
         normalized_paths = {
             "raw": self._growi_path,
