@@ -59,8 +59,8 @@ class GrowiExport:
         self._pc_max_path_len = self._get_max_path_len()
 
         self._normalization_form = normalization_form
-        self._growi_url = growi_url.rstrip("/")
-        self._growi_path = growi_path.rstrip("/")
+        self._growi_url = growi_url.rstrip("/") if growi_url.strip() != "/" else growi_url
+        self._growi_path = growi_path.rstrip("/") if growi_path.strip() != "/" else growi_path
         self._access_token = access_token
         self._export_dir = str(Path(self._auto_normalize_dir(export_dir) or "").absolute())
         self._logger = logger
