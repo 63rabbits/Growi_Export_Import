@@ -16,6 +16,7 @@ import argparse
 import configparser
 import json
 import unicodedata
+import uuid
 from configparser import NoOptionError
 
 import requests
@@ -41,6 +42,7 @@ DEFAULT_TIMEOUT     = 10.0  # seconds, session timeout
 API_SLEEP_INTERVAL  = 0.1   # seconds, Reducing server load
 
 HTTP_RES_SUCCESS        = 200
+HTTP_RES_CREATED        = 201
 
 NAME_PAGE_JSON          = "page.json"
 NAME_ATTACHMENTS_JSON   = "attachments.json"
@@ -49,6 +51,14 @@ NAME_TAGS_JSON          = "tags.json"
 NAME_BOOKMARKS_JSON     = "bookmarks.json"
 NAME_MARKDOWN           = "markdown.md"
 NAME_ATTACHMENT         = "attachment"
+
+BODY_TO_GET_USERNAME = "\nThis page was created by the app to retrieve the username.\n\n" \
+                        "**Please delete it**, as it is not intended to remain.\n"
+GROWI_GRANT_PUBLIC      = 1
+GROWI_GRANT_RESTRICTED  = 2
+GROWI_GRANT_SPECIFIED   = 3
+GROWI_GRANT_OWNER       = 4
+GROWI_GRANT_USER_GROUP  = 5
 
 
 class GrowiExport:
@@ -466,6 +476,53 @@ class GrowiExport:
 
         return False
 
+    def _get_username(self) -> str:
+        username = "unknown"
+
+        # Created a page to retrieve the username
+        growi_body = BODY_TO_GET_USERNAME
+        growi_path = "/delete_me_" + uuid.uuid4().hex
+        growi_grant = GROWI_GRANT_PUBLIC
+
+        res = self._session.post(
+            f"{self._growi_url}/_api/v3/page",
+            json={
+                "body": growi_body,
+                "path": growi_path,
+                "grant": growi_grant
+            },
+            timeout=DEFAULT_TIMEOUT
+        )
+        res_status = res.status_code
+        if res_status != HTTP_RES_CREATED:
+            self._logger.log(f"[GET USERNAME] ### FAILED ### Created a page to retrieve the username, "
+                             f"but it failed. (HTTP status code : {res_status})", to_terminal=False)
+            return username
+
+        # Get username
+        page_json = res.json()
+        username = page_json.get("page", {}).get("creator", {}).get("username", "unknown")
+
+        # Delete a page
+        page_id = page_json.get("page", {}).get("_id")
+        revision_id = page_json.get("page", {}).get("revision")
+        delete_page = { page_id: revision_id }
+        res = self._session.post(
+            f"{self._growi_url}/_api/v3/pages/delete",
+            json={
+                "pageIdToRevisionIdMap": delete_page,
+                "isCompletely": True,
+                "isRecursively": True
+            },
+            timeout=DEFAULT_TIMEOUT
+        )
+        res_status = res.status_code
+        if res_status != HTTP_RES_SUCCESS:
+            self._logger.log(f"[GET USERNAME] ### FAILED ### Delete a page, but it failed. "
+                             f"(HTTP status code : {res_status})", to_terminal=False)
+
+        return username
+
     def _configuration_logging(self) -> None:
         access_token_warning = "### WARNING ### No ACCESS_TOKEN provided."
         if self._access_token:
@@ -532,6 +589,7 @@ class GrowiExport:
             time.sleep(API_SLEEP_INTERVAL)  # Reducing server load
 
         success_count = total_count - failed_count
+        username = self._get_username()
         self._logger.log(
             f"========================================\n"
             f" Summary\n"
@@ -539,6 +597,8 @@ class GrowiExport:
             f"  Total pages : {total_count} pages\n"
             f"  Successful  : {success_count} pages\n"
             f"  Failed      : {failed_count} pages\n"
+            f"----------------------------------------\n"
+            f"  Export user : {username}\n"
             f"========================================\n"
             f"[i] For details, please refer to {self._logger.filepath.name}"
         )
