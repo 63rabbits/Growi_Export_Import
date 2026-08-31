@@ -67,12 +67,12 @@ class GrowiImport:
         self._os_name = self._get_os_type()
         self._pc_max_path_len = self._get_max_path_len()
 
-        self._growi_url = growi_url.rstrip("/")
-        self._growi_path = growi_path.rstrip("/")
+        self._normalization_form = normalization_form
+        self._growi_url = growi_url.rstrip("/") if growi_url.strip() != "/" else growi_url
+        self._growi_path = growi_path.rstrip("/") if growi_path.strip() != "/" else growi_path
         self._access_token = access_token
         self._export_dir = str(Path(export_dir).absolute())
         self._logger = logger
-        self._normalization_form = normalization_form
         self._upload_comments = comments
         self._upload_bookmark = bookmark
         self._username = "unknown"
