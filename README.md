@@ -86,8 +86,11 @@ Export data from Growi, and import this data.
            - Importing: The contents of `EXPORT_DIR` and its subdirectories are imported under the specified page.
            - Example: `/user/foo`
        - **ACCESS_TOKEN**: Specifies the access token obtained earlier.
-           - Exporting: Specify an access token with read permissions (read).
-           - Importing: Specify an access token with write permissions (write).
+           - Exporting:
+               - No access token specified: Only public pages are exported. The exporting user is recorded as **unknown**. 
+               - Scope is `read:all`: The exporting user is recorded as **unknown** . (username cannot be determined)
+               - Scope is `write:all`: The exporting user is recorded.
+           - Importing: Specify an access token with the `write:all` scope.
        - **EXPORT_DIR**: Specifies the target directory.
            - Exporting: Specifies the destination directory for the export.
            - Importing: Specifies the directory to import from.
