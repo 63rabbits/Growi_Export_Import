@@ -1,4 +1,9 @@
 """
+Growi Import
+
+Created by 63rabbits goodman on 2026/08/29.
+
+---
 Functional verification was performed in the following environment:
 - GROWI 8.0.1
 - Python 3.12.13
