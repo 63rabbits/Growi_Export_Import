@@ -2,7 +2,7 @@
 
 ---
 
-Export data from Growi, and import this data.
+Export Growi pages to markdown or json, and import this data into Growi.
 
 ## Overview
 
