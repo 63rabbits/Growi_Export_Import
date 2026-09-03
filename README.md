@@ -6,8 +6,8 @@ Export data from Growi, and import this data.
 
 ## Overview
 
-- Specified page and below --( Export )--> Specified directory below
-- Specified page below <--( Import )-- Specified directory and below 
+- Specified page and below --( **Export** )--> Specified directory below
+- Specified page below <--( **Import** )-- Specified directory and below 
 - Items
 
 | **#** | **Item**   | **Export** | **Import** | **Export Format** | **Notes**                                                    |
