@@ -69,6 +69,7 @@ class GrowiImport:
 
     def __init__(self, growi_url: str, growi_path: str, access_token: str, export_dir: str, logger: TerminalFileLogger,
                  normalization_form: str, comments: bool, bookmark: bool):
+        self._logger = logger
         self._os_name = self._get_os_type()
         self._pc_max_path_len = self._get_max_path_len()
 
@@ -77,7 +78,6 @@ class GrowiImport:
         self._growi_path = growi_path.rstrip("/") if growi_path.strip() != "/" else growi_path
         self._access_token = access_token
         self._export_dir = str(Path(export_dir).absolute())
-        self._logger = logger
         self._upload_comments = comments
         self._upload_bookmark = bookmark
         self._username = "unknown"
