@@ -1,4 +1,10 @@
 """
+Growi Export
+
+Created by 63rabbits goodman on 2026/08/29.
+
+---
+
 Functional verification was performed in the following environment:
 - GROWI 8.0.1
 - Python 3.12.13
@@ -65,6 +71,7 @@ class GrowiExport:
 
     def __init__(self, growi_url: str, growi_path: str, access_token: str, export_dir: str, logger: TerminalFileLogger,
                  normalization_form: str):
+        self._logger = logger
         self._os_name = self._get_os_type()
         self._pc_max_path_len = self._get_max_path_len()
 
@@ -73,7 +80,6 @@ class GrowiExport:
         self._growi_path = growi_path.rstrip("/") if growi_path.strip() != "/" else growi_path
         self._access_token = access_token
         self._export_dir = str(Path(self._auto_normalize_dir(export_dir) or "").absolute())
-        self._logger = logger
         self._session = self._create_session()
 
     @staticmethod
