@@ -23,6 +23,15 @@ Export data from Growi, and import this data.
 | 9     | Share Links | -          | -          |                   |                                                              |
 | 10    | Update History | -          | -          |                   |                                                              |
 
+
+
+## Notes
+
+- Growi paths cannot be used directly as file paths during export. Characters that are invalid in file paths are replaced with `_`.
+- The default value for `NORMALIZATION_FORM` is **NFC**. Growi paths and file paths are "composed".
+- Operating systems impose limits on the maximum length of file paths. If a path exceeds this limit, the item will be logged and skipped.
+  - Info: On Windows, the app treats 260 characters as the maximum limit. If you wish to relax this limit, please modify the code.
+
 ## Background & Reason for Creation
 
 - Created with the help of Google Gemini because GROWI's **data archive** and **data import** functions were not working properly.
