@@ -6,6 +6,7 @@ Export Growi pages to markdown or json, and import this data into Growi.
 
 ## Overview
 
+- Use the REST API.
 - Specified page and below --( **Export** )--> Specified directory below
 - Specified page below <--( **Import** )-- Specified directory and below 
 - Items
