@@ -2,7 +2,7 @@
 
 ---
 
-Export Growi pages to markdown or json, and import this data into Growi.
+Export [GROWI](https://github.com/growilabs/growi) pages to markdown or json, and import this data into Growi.
 
 ## Overview
 
